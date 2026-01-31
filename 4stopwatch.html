@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .timer-display {
+      font-size: 3rem;
+      font-family: monospace;
+      color: var(--primary-color);
+      margin: 1.5rem 0;
+      font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .controls button {
+      flex: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <div class="center-box" style="text-align: center;">
+      <h2 style="margin-top: 0;">Stopwatch</h2>
+      <div id="display" class="timer-display">00:00:00</div>
+      <div class="controls">
+        <button onclick="start()">Start</button>
+        <button onclick="stop()" style="background-color: #f59e0b;">Stop</button>
+        <button onclick="reset()" style="background-color: #ef4444;">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let timer, sec = 0;
+    function updateDisplay() {
+      let h = String(Math.floor(sec / 3600)).padStart(2, '0');
+      let m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+      let s = String(sec % 60).padStart(2, '0');
+      document.getElementById('display').textContent = `${h}:${m}:${s}`;
+    }
+    function start() {
+      if (!timer) timer = setInterval(() => { sec++; updateDisplay(); }, 1000);
+    }
+    function stop() {
+      clearInterval(timer); timer = null;
+    }
+    function reset() {
+      stop(); sec = 0; updateDisplay();
+    }
+  </script>
+</body>
+
+</html>

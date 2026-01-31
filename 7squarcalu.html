@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+
+        <div class="center-box">
+            <h2 style="text-align: center; margin-top: 0;">Math Calculator</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 0;">Enter a value in any box</p>
+
+            <div class="calc-grid">
+                <div>
+                    <label for="one">Value (x)</label>
+                    <input id="one" type="number" placeholder="x">
+                </div>
+                <div>
+                    <label for="two">Square (x²)</label>
+                    <input id="two" type="number" placeholder="x²">
+                </div>
+                <div>
+                    <label for="three">Cube (x³)</label>
+                    <input id="three" type="number" placeholder="x³">
+                </div>
+                <div>
+                    <label for="four">Power 4 (x⁴)</label>
+                    <input id="four" type="number" placeholder="x⁴">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let a = document.querySelector('#one')
+        let b = document.querySelector('#two')
+        let c = document.querySelector('#three')
+        let d = document.querySelector('#four')
+
+        a.addEventListener("input", () => {
+            let val = parseFloat(a.value);
+            if (isNaN(val)) return;
+            let square = Math.pow(val, 2);
+            let cube = Math.pow(val, 3);
+            let quard = Math.pow(val, 4);
+            b.value = square;
+            c.value = cube;
+            d.value = quard;
+        })
+
+        b.addEventListener("input", () => {
+            let val = parseFloat(b.value);
+            if (isNaN(val)) return;
+            let single = Math.sqrt(val)
+            let cube = Math.pow(single, 3)
+            let quard = Math.pow(single, 4)
+            a.value = single;
+            c.value = cube;
+            d.value = quard
+        })
+
+        c.addEventListener("input", () => {
+            let val = parseFloat(c.value);
+            if (isNaN(val)) return;
+            let single = Math.pow(val, 1 / 3)
+            let sqr = Math.pow(single, 2)
+            let quard = Math.pow(single, 4)
+            a.value = single;
+            b.value = sqr;
+            d.value = quard
+        })
+
+        d.addEventListener("input", () => {
+            let val = parseFloat(d.value);
+            if (isNaN(val)) return;
+            let single = Math.pow(val, 1 / 4)
+            let sqr = Math.pow(single, 2)
+            let cube = Math.pow(single, 3)
+            a.value = single;
+            c.value = cube;
+            b.value = sqr
+        })
+    </script>
+</body>
+
+</html>

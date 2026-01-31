@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalable Color Switcher</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .color-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .box {
+            height: 100px;
+            width: 100px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+
+        <div class="center-box" style="max-width: 600px;">
+            <h2 style="text-align: center; margin-top: 0;">Color Switcher</h2>
+            <p style="text-align: center; color: var(--text-secondary);">Click a color to change all boxes!</p>
+
+            <div class="color-grid">
+                <div class="box" data-color="#ef4444" style="background-color: #ef4444;"></div>
+                <div class="box" data-color="#22c55e" style="background-color: #22c55e;"></div>
+                <div class="box" data-color="#eab308" style="background-color: #eab308;"></div>
+                <div class="box" data-color="#3b82f6" style="background-color: #3b82f6;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allBoxes = document.querySelectorAll('.box');
+
+        allBoxes.forEach((clickedBox) => {
+            clickedBox.addEventListener('click', () => {
+                const newColor = clickedBox.getAttribute('data-color');
+                allBoxes.forEach((box) => {
+                    box.style.backgroundColor = newColor;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>box</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="color-div main">
+    
+        <div class="first">
+            <div class="one"></div>
+            <div class="two "></div>
+        </div>
+        <div class="second">
+            <div class="three"></div>
+            <div class="four"></div>
+        </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> -->

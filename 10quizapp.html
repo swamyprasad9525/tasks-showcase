@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .option-btn {
+            background-color: #f1f5f9;
+            color: var(--text-primary);
+            text-align: left;
+            margin-bottom: 0.5rem;
+            border: 2px solid transparent;
+        }
+
+        .option-btn:hover {
+            background-color: #e2e8f0;
+            border-color: var(--primary-color);
+        }
+
+        .option-btn.correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Profile</a>
+
+        <div class="center-box" style="max-width: 500px;">
+            <div id="quiz-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="margin: 0;">Quiz App</h2>
+                    <span id="score" style="font-weight: bold; color: var(--primary-color);">Score: 0</span>
+                </div>
+
+                <div id="question-area">
+                    <h3 id="question-text" style="font-size: 1.25rem;">Question goes here...</h3>
+                    <div id="options-container">
+                        <!-- Options injected here -->
+                    </div>
+                    <button id="next-btn" class="hidden" onclick="nextQuestion()" style="margin-top: 1rem;">Next
+                        Question →</button>
+                </div>
+            </div>
+
+            <div id="result-area" class="hidden" style="text-align: center;">
+                <h2 style="font-size: 2rem;">Quiz Completed!</h2>
+                <p style="font-size: 1.5rem;">Your Score: <span id="final-score"
+                        style="color: var(--primary-color); font-weight: bold;"></span></p>
+                <button onclick="restartQuiz()">Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What does HTML stand for?",
+                options: ["Hyper Text Markup Language", "Home Tool Markup Language", "Hyperlinks and Text Markup Language", "Hyper Tool Multi Language"],
+                answer: 0
+            },
+            {
+                question: "Which language is used for styling web pages?",
+                options: ["HTML", "JQuery", "CSS", "XML"],
+                answer: 2
+            },
+            {
+                question: "What is the correct syntax for referring to an external script called 'app.js'?",
+                options: ["<script href='app.js'>", "<script name='app.js'>", "<script src='app.js'>", "<script file='app.js'>"],
+                answer: 2
+            },
+            {
+                question: "Which HTML tag is used to define an internal style sheet?",
+                options: ["<css>", "<script>", "<style>", "<link>"],
+                answer: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-text').textContent = `${currentQuestion + 1}. ${q.question}`;
+            const optsDiv = document.getElementById('options-container');
+            optsDiv.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optsDiv.appendChild(btn);
+            });
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function checkAnswer(selectedIndex, btn) {
+            // Disable all buttons
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            const correctIndex = questions[currentQuestion].answer;
+            if (selectedIndex === correctIndex) {
+                btn.classList.add('correct');
+                score++;
+                document.getElementById('score').textContent = `Score: ${score}`;
+            } else {
+                btn.classList.add('wrong');
+                // Highlight correct answer
+                buttons[correctIndex].classList.add('correct');
+            }
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('result-area').classList.remove('hidden');
+            document.getElementById('final-score').textContent = `${score} / ${questions.length}`;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').textContent = `Score: 0`;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('result-area').classList.add('hidden');
+            loadQuestion();
+        }
+
+        // Start
+        loadQuestion();
+    </script>
+</body>
+
+</html>

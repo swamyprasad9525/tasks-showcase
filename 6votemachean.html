@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vote Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <div class="center-box">
+      <h2 style="text-align: center; margin-top: 0;">Vote Management</h2>
+      <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+        <div style="text-align: center; flex: 1; padding: 1rem; background: #f1f5f9; border-radius: 8px;">
+          <h3 style="margin: 0; color: #ef4444;">A</h3>
+          <div id="a" style="font-size: 2rem; font-weight: bold;">0</div>
+          <button onclick="vote('A')" style="background-color: #ef4444; width: auto; margin-top: 1rem;">Vote A</button>
+        </div>
+        <div style="text-align: center; flex: 1; padding: 1rem; background: #f1f5f9; border-radius: 8px;">
+          <h3 style="margin: 0; color: #3b82f6;">B</h3>
+          <div id="b" style="font-size: 2rem; font-weight: bold;">0</div>
+          <button onclick="vote('B')" style="background-color: #3b82f6; width: auto; margin-top: 1rem;">Vote B</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let votes = { A: 0, B: 0 };
+    function vote(option) {
+      votes[option]++;
+      document.getElementById(option.toLowerCase()).textContent = votes[option];
+    }
+  </script>
+</body>
+
+</html>

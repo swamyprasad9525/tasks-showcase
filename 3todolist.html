@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      background: #f1f5f9;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li button {
+      width: auto;
+      margin: 0;
+      padding: 0.25rem 0.75rem;
+      background-color: #ef4444;
+      font-size: 0.8rem;
+    }
+
+    li button:hover {
+      background-color: #dc2626;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <div class="center-box">
+      <h2 style="text-align: center; margin-top: 0;">Todo List</h2>
+      <div style="display: flex; gap: 0.5rem;">
+        <input type="text" id="todoInput" placeholder="Add a task" style="margin-bottom: 0;">
+        <button onclick="addTodo()" style="width: auto; margin-top: 0;">Add</button>
+      </div>
+      <ul id="todoList" style="margin-top: 1.5rem;"></ul>
+    </div>
+  </div>
+
+  <script>
+    function addTodo() {
+      const input = document.getElementById('todoInput');
+      const value = input.value.trim();
+      if (value) {
+        const li = document.createElement('li');
+
+        const span = document.createElement('span');
+        span.textContent = value;
+        li.appendChild(span);
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Delete';
+        btn.onclick = () => li.remove();
+        li.appendChild(btn);
+
+        document.getElementById('todoList').appendChild(li);
+        input.value = '';
+      }
+    }
+  </script>
+</body>
+
+</html>

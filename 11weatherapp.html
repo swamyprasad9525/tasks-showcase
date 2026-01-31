@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .weather-card {
+            text-align: center;
+            background: linear-gradient(to bottom right, #38bdf8, #3b82f6);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .temp {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .condition {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .details {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Profile</a>
+
+        <div class="center-box" style="max-width: 500px;">
+            <h2 style="text-align: center;">Weather Dashboard</h2>
+
+            <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="cityInput" placeholder="Enter city (e.g. London)" style="margin-bottom: 0;">
+                <button onclick="getWeather()" style="width: auto; margin-top: 0;">Search</button>
+            </div>
+
+            <div id="weatherData" class="weather-card hidden" style="display: none;">
+                <h3 id="cityName">City Name</h3>
+                <div class="temp"><span id="tempVal">--</span>°C</div>
+                <div class="condition" id="conditionText">Clear Sky</div>
+                <div class="details">
+                    <div>Wind: <span id="windVal">--</span> km/h</div>
+                </div>
+            </div>
+
+            <p id="errorMsg" style="text-align: center; color: #ef4444; display: none; margin-top: 1rem;">City not found
+                or API error.</p>
+        </div>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value.trim();
+            if (!city) return;
+
+            const errorMsg = document.getElementById('errorMsg');
+            const weatherDiv = document.getElementById('weatherData');
+
+            errorMsg.style.display = 'none';
+            weatherDiv.style.display = 'none';
+
+            try {
+                // 1. Geocoding API to get lat/long
+                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
+                const geoData = await geoRes.json();
+
+                if (!geoData.results || geoData.results.length === 0) {
+                    throw new Error('City not found');
+                }
+
+                const { latitude, longitude, name, country } = geoData.results[0];
+
+                // 2. Weather API
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+                const weatherData = await weatherRes.json();
+
+                // 3. Update UI
+                document.getElementById('cityName').textContent = `${name}, ${country}`;
+                document.getElementById('tempVal').textContent = weatherData.current_weather.temperature;
+                document.getElementById('windVal').textContent = weatherData.current_weather.windspeed;
+
+                // Map WMO codes to text (simple version)
+                const code = weatherData.current_weather.weathercode;
+                let condition = "Clear";
+                if (code > 0 && code <= 3) condition = "Partly Cloudy";
+                else if (code > 3 && code <= 48) condition = "Foggy";
+                else if (code > 48 && code <= 67) condition = "Rainy";
+                else if (code > 67 && code <= 77) condition = "Snowy";
+                else if (code > 80) condition = "Stormy";
+
+                document.getElementById('conditionText').textContent = condition;
+
+                weatherDiv.style.display = 'block';
+
+            } catch (err) {
+                console.error(err);
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = "Could not fetch weather data. Please try again.";
+            }
+        }
+    </script>
+</body>
+
+</html>

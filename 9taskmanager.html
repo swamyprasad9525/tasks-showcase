@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .column {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            min-height: 300px;
+        }
+
+        .column h3 {
+            text-align: center;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+            color: var(--text-secondary);
+        }
+
+        .task-item {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Profile</a>
+
+        <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow);">
+            <h2 style="text-align: center; margin-top: 0;">Task Manager</h2>
+
+            <div style="display: flex; gap: 0.5rem; max-width: 500px; margin: 0 auto;">
+                <input type="text" id="newTaskInput" placeholder="Enter new task..." style="margin-bottom: 0;">
+                <button onclick="addTask()" style="width: auto; margin-top: 0;">Add</button>
+            </div>
+
+            <div class="kanban-board">
+                <div class="column" id="col-todo">
+                    <h3>To Do</h3>
+                    <div class="task-list" id="list-todo"></div>
+                </div>
+                <div class="column" id="col-progress">
+                    <h3>In Progress</h3>
+                    <div class="task-list" id="list-progress"></div>
+                </div>
+                <div class="column" id="col-done">
+                    <h3>Done</h3>
+                    <div class="task-list" id="list-done"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addTask() {
+            const input = document.getElementById('newTaskInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            createTaskElement(text, 'list-todo');
+            input.value = '';
+        }
+
+        function createTaskElement(text, parentId) {
+            const div = document.createElement('div');
+            div.className = 'task-item';
+            div.textContent = text;
+            div.onclick = function () {
+                moveTask(div);
+            };
+            document.getElementById(parentId).appendChild(div);
+        }
+
+        function moveTask(element) {
+            const parentId = element.parentElement.id;
+            let targetId;
+
+            if (parentId === 'list-todo') targetId = 'list-progress';
+            else if (parentId === 'list-progress') targetId = 'list-done';
+            else if (parentId === 'list-done') {
+                if (confirm('Delete this task?')) {
+                    element.remove();
+                    return;
+                }
+                targetId = 'list-todo'; // Cycle back or do nothing? Let's cycle for fun
+            }
+
+            if (targetId) {
+                document.getElementById(targetId).appendChild(element);
+            }
+        }
+
+        // Add some sample tasks
+        createTaskElement('Design Profile UI', 'list-done');
+        createTaskElement('Implement Quiz App', 'list-progress');
+        createTaskElement('Fetch Weather Data', 'list-todo');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <div class="center-box">
+      <h2 style="text-align: center; margin-top: 0;">Bank Management</h2>
+      <div style="font-size: 1.25rem; text-align: center; margin-bottom: 1.5rem;">
+        Balance: <strong style="color: var(--primary-color);">$<span id="balance">0</span></strong>
+      </div>
+
+      <input type="number" id="amount" placeholder="Enter Amount" required>
+
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+        <button onclick="deposit()" style="background-color: #10b981;">Deposit</button>
+        <button onclick="withdraw()" style="background-color: #ef4444;">Withdraw</button>
+      </div>
+
+      <div id="msg" style="margin-top: 1rem; text-align: center; color: #ef4444; height: 1.5rem;"></div>
+    </div>
+  </div>
+
+  <script>
+    let balance = 0;
+    function update() {
+      document.getElementById('balance').textContent = balance;
+    }
+    function deposit() {
+      const amt = parseFloat(document.getElementById('amount').value);
+      if (amt > 0) { balance += amt; update(); document.getElementById('msg').textContent = ''; }
+      else document.getElementById('msg').textContent = 'Enter a valid amount.';
+    }
+    function withdraw() {
+      const amt = parseFloat(document.getElementById('amount').value);
+      if (amt > 0 && amt <= balance) { balance -= amt; update(); document.getElementById('msg').textContent = ''; }
+      else document.getElementById('msg').textContent = 'Invalid or insufficient funds.';
+    }
+  </script>
+</body>
+
+</html>
